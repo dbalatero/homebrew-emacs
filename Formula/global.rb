@@ -110,7 +110,7 @@ class Global < Formula
       assert_match "test.c", shell_output("#{bin}/global -s cvar")
       assert_match "test.py", shell_output("#{bin}/global -s pyvar")
     end
-    if build.with? "ctags" || build.with? "universal-ctags"
+    if build.with?("ctags") || build.with?("universal-ctags")
       assert shell_output("#{bin}/gtags --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=exuberant-ctags .")
       # ctags only yields definitions
       assert_match "test.c", shell_output("#{bin}/global -d cfunc   # passes")

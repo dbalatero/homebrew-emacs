@@ -25,6 +25,7 @@ class Global < Formula
   option "with-ctags", "Enable Exuberant Ctags as a plug-in parser"
   option "with-pygments", "Enable Pygments as a plug-in parser (should enable exuberant-ctags too)"
   option "with-sqlite3", "Use SQLite3 API instead of BSD/DB API for making tag files"
+  option "with-universal-ctags", "Enable Universal Ctags"
 
   deprecated_option "with-exuberant-ctags" => "with-ctags"
 
@@ -50,6 +51,10 @@ class Global < Formula
 
     if build.with? "ctags"
       args << "--with-exuberant-ctags=#{Formula["ctags"].opt_bin}/ctags"
+    end
+
+    if build.with?("universal-ctags")
+      args << "--with-universal-ctags=#{Formula['ctags'].opt_bin}/ctags"
     end
 
     if build.with? "pygments"
@@ -105,7 +110,7 @@ class Global < Formula
       assert_match "test.c", shell_output("#{bin}/global -s cvar")
       assert_match "test.py", shell_output("#{bin}/global -s pyvar")
     end
-    if build.with? "ctags"
+    if build.with? "ctags" || build.with? "universal-ctags"
       assert shell_output("#{bin}/gtags --gtagsconf=#{share}/gtags/gtags.conf --gtagslabel=exuberant-ctags .")
       # ctags only yields definitions
       assert_match "test.c", shell_output("#{bin}/global -d cfunc   # passes")
